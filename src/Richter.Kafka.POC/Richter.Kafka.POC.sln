@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Richter.Kafka.POC", "Richte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Web.API", "01-Web.API", "{AD3C2823-BC01-4411-AD62-5DAB77574955}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Richter.Kafka.Core", "..\Richter.Kafka.Core\Richter.Kafka.Core.csproj", "{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{92A81DCE-7EA7-428E-BC5A-B85F250242FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A81DCE-7EA7-428E-BC5A-B85F250242FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92A81DCE-7EA7-428E-BC5A-B85F250242FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{92A81DCE-7EA7-428E-BC5A-B85F250242FB} = {AD3C2823-BC01-4411-AD62-5DAB77574955}
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A} = {AD3C2823-BC01-4411-AD62-5DAB77574955}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443CBE60-840F-4528-B95B-8D4EABDF1AC7}

@@ -1,0 +1,9 @@
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.csprojAssemblyReference.cache
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.AssemblyInfoInputs.cache
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.AssemblyInfo.cs
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.csproj.CoreCompileInputs.cache
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\bin\Debug\netcoreapp3.1\Richter.Kafka.Core.deps.json
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\bin\Debug\netcoreapp3.1\Richter.Kafka.Core.dll
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\bin\Debug\netcoreapp3.1\Richter.Kafka.Core.pdb
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.dll
+C:\POCs\kafkaPOCs\Richter.Kafka.Core\obj\Debug\netcoreapp3.1\Richter.Kafka.Core.pdb

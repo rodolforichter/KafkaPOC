@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5pQla5ylNLkD+c2n2amfObLyP/OuW7WKUjqdvNAXOgtPtDriJhdJo+NqgZ1D33mnRyQ7dy4OWHmXl93f3HYfAA==",
+  "success": true,
+  "projectFilePath": "C:\\POCs\\KafkaPOCGitRepository\\src\\Richter.Kafka.Core\\Richter.Kafka.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rodolfo.richter\\.nuget\\packages\\librdkafka.redist\\1.6.1-rc1\\librdkafka.redist.1.6.1-rc1.nupkg.sha512"
+  ],
+  "logs": []
+}
