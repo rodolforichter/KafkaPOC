@@ -132,3 +132,5 @@ C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\obj\Debug\netcoreapp3.1\Rich
 C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\obj\Debug\netcoreapp3.1\Richter.Kafka.POC.dll
 C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\obj\Debug\netcoreapp3.1\Richter.Kafka.POC.pdb
 C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\obj\Debug\netcoreapp3.1\Richter.Kafka.POC.genruntimeconfig.cache
+C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\bin\Debug\netcoreapp3.1\Richter.Kafka.Core.dll
+C:\POCs\KafkaPOCGitRepository\src\Richter.Kafka.POC\bin\Debug\netcoreapp3.1\Richter.Kafka.Core.pdb

@@ -1,26 +1,29 @@
 ﻿using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
+using Richter.Kafka.Core.Consumer;
+using Richter.Kafka.Core.Product;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Richter.Kafka.POC.Controllers
 {
     public class KafkaConsumerController : ControllerBase
     {
         [HttpPost("GetMessages")]
-        public IActionResult GetMessages(string brokerList, IList<string> topics)
+        public IActionResult GetMessages(string brokerList, IList<string> topics, string consumerGroup)
         {
-            List<string> mensagens = new List<string>();
+            List<KafkaObjectResult<GpsLocalizationViewModel>> messages = new List<KafkaObjectResult<GpsLocalizationViewModel>>();
+
             StringBuilder sbStatistics = new StringBuilder();
+
             CancellationTokenSource cts = new CancellationTokenSource();
+
             var config = new ConsumerConfig
             {
                 BootstrapServers = brokerList,
-                GroupId = "richter-consumer",
+                GroupId = consumerGroup,
                 EnableAutoCommit = false,
                 StatisticsIntervalMs = 5000,
                 SessionTimeoutMs = 6000,
@@ -28,20 +31,21 @@ namespace Richter.Kafka.POC.Controllers
                 EnablePartitionEof = true
             };
 
-            const int commitPeriod = 5;
+            const int commitPeriod = 20;
 
-          
-            using (var consumer = new ConsumerBuilder<string, string>(config)                
+
+            using (var consumer = new ConsumerBuilder<string, GpsLocalizationViewModel>(config)
                 .SetErrorHandler((_, e) => sbStatistics.Append($"Error: {e.Reason} {Environment.NewLine}"))
                 .SetStatisticsHandler((_, json) => sbStatistics.Append($"Statistics: {json} {Environment.NewLine}"))
                 .SetPartitionsAssignedHandler((c, partitions) =>
-                {                    
+                {
                     //sb.Append($"Assigned partitions: [{string.Join(", ", partitions)}] {Environment.NewLine}");
                 })
                 .SetPartitionsRevokedHandler((c, partitions) =>
                 {
                     //sb.Append($"Revoking assignment: [{string.Join(", ", partitions)}] {Environment.NewLine}");
                 })
+                .SetValueDeserializer(new DeserializerGpsLocalization())
                 .Build())
             {
                 consumer.Subscribe(topics);
@@ -49,9 +53,10 @@ namespace Richter.Kafka.POC.Controllers
 
                 try
                 {
-                    var offSet = new TopicPartitionOffset("Bandas", 0, new Offset(0));
+                   
                     foreach (var t in topics)
                     {
+                        var offSet = new TopicPartitionOffset(t, 0, new Offset(0));
                         consumer.Assign(offSet);
                     }
                     while (true)
@@ -62,11 +67,10 @@ namespace Richter.Kafka.POC.Controllers
 
                             if (consumeResult.IsPartitionEOF)
                             {
-                                mensagens.Add($"Fim do Topic {consumeResult.Topic}, offset {consumeResult.Offset}.");
                                 break;
                             }
 
-                            mensagens.Add($"Recebida mensagem da partição de offSet { consumeResult.TopicPartitionOffset.Partition.Value } ,Mensagem: {consumeResult.Message.Value}, Chave: { consumeResult.Message.Key } {Environment.NewLine}");
+                            messages.Add(new KafkaObjectResult<GpsLocalizationViewModel>() { Key = consumeResult.Message.Key, OffSet = consumeResult.TopicPartitionOffset.Partition.Value, MessageResult = consumeResult.Message.Value });
 
                             if (consumeResult.Offset % commitPeriod == 0)
                             {
@@ -76,7 +80,7 @@ namespace Richter.Kafka.POC.Controllers
                                 }
                                 catch (KafkaException e)
                                 {
-                                    mensagens.Add($"Commit error: {e.Error.Reason}");
+                                    //mensagens.Add($"Commit error: {e.Error.Reason}");
                                 }
                             }
                         }
@@ -88,11 +92,11 @@ namespace Richter.Kafka.POC.Controllers
                 }
                 catch (OperationCanceledException)
                 {
-                    mensagens.Add("Closing consumer.");
+                    //mensagens.Add("Closing consumer.");
                     consumer.Close();
                 }
 
-                return Ok(mensagens);
+                return Ok(messages);
             }
         }
     }
