@@ -19,6 +19,6 @@
     <Import Project="$(NuGetPackageRoot)librdkafka.redist\1.6.1-rc1\build\librdkafka.redist.props" Condition="Exists('$(NuGetPackageRoot)librdkafka.redist\1.6.1-rc1\build\librdkafka.redist.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\rodolfo.richter\.nuget\packages\newtonsoft.json\9.0.1</PkgNewtonsoft_Json>
+    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\rodolfo.richter\.nuget\packages\newtonsoft.json\10.0.3</PkgNewtonsoft_Json>
   </PropertyGroup>
 </Project>

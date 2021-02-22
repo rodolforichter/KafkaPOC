@@ -42,8 +42,7 @@ namespace Richter.Kafka.Core.Product
         private readonly JsonSchemaGeneratorSettings jsonSchemaGeneratorSettings;
         public GpsLocalizationViewModel Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
         {
-            //string text =  Encoding.UTF32.GetString(data.ToArray());
-            //return JsonSerializer.Deserialize<GpsLocalizationViewModel>(text);
+            
 
             try
             {

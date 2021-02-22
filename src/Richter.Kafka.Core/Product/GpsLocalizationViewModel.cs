@@ -6,18 +6,15 @@ using System.Runtime.Serialization;
 namespace Richter.Kafka.Core.Product
 {
     [Serializable]
-    public class GpsLocalizationViewModel : ISpecificRecord
+    public partial class GpsLocalizationViewModel : ISpecificRecord
     {
-        public static Schema _SCHEMA = Avro.Schema.Parse(@"{""type"":""record"",""name"":""GpsLocalizationViewModel"",""namespace"":""Richter.Kafka.Core.Product"",""fields"":[{""name"":""MessageKey"",""type"":""string""},{""name"":""Latitude"",""type"":""string""},{""name"":""Longitude"",""type"":""string""},{""name"":""VehicleId"",""type"":""int""}]");
+        public static Schema _SCHEMA = Avro.Schema.Parse(@"{""type"":""record"",""name"":""GpsLocalizationViewModel"",""namespace"":""Richter.Kafka.Core.Product"",""fields"":[{""name"":""MessageKey"",""type"":""string""},{""name"":""Latitude"",""type"":""string""},{""name"":""Longitude"",""type"":""string""},{""name"":""VehicleId"",""type"":""int""}]}");
+
         public string MessageKey { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        //public DateTime Time { get; set; }
-
         public int VehicleId { get; set; }
-
-        public Schema Schema => _SCHEMA;
-
+        public virtual Schema Schema => _SCHEMA;
         public object Get(int fieldPos)
         {
             switch (fieldPos)
