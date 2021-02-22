@@ -3,7 +3,6 @@ using Confluent.Kafka.Admin;
 using Microsoft.AspNetCore.Mvc;
 using Richter.Kafka.POC.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
