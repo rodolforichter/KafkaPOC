@@ -40,19 +40,19 @@ namespace Richter.Kafka.POC.Controllers
 
             string schemaRegistryUrl = "localhost:8081";
 
-            var schema = (RecordSchema)RecordSchema.Parse(
-                @"{
-                    ""type"": ""record"",
-                    ""name"": ""GpsLocalizationViewModel"",
-                    ""namespace"":""Richter.Kafka.Core.Product"",
-                    ""fields"": [
-                        {""name"": ""MessageKey"", ""type"": ""string""},
-                        {""name"": ""Latitude"", ""type"": ""string""},
-                        {""name"": ""Longitude"", ""type"": ""string""},
-                        {""name"": ""VehicleId"", ""type"": ""int""},
-                    ]
-                  }"
-            );
+            //var schema = (RecordSchema)RecordSchema.Parse(
+            //    @"{
+            //        ""type"": ""record"",
+            //        ""name"": ""GpsLocalizationViewModel"",
+            //        ""namespace"":""Richter.Kafka.Core.Product"",
+            //        ""fields"": [
+            //            {""name"": ""MessageKey"", ""type"": ""string""},
+            //            {""name"": ""Latitude"", ""type"": ""string""},
+            //            {""name"": ""Longitude"", ""type"": ""string""},
+            //            {""name"": ""VehicleId"", ""type"": ""int""},
+            //        ]
+            //      }"
+            //);
 
             using (var schemaRegistry = new CachedSchemaRegistryClient(new SchemaRegistryConfig
             {
@@ -122,7 +122,7 @@ namespace Richter.Kafka.POC.Controllers
         }
 
         [HttpPost("GetMessagesSerializedToViewModel")]
-        public IActionResult GetMessagesSerializedToViewModel(string brokerList, IList<string> topics, string consumerGroup)
+        public IActionResult GetMessagesSerializedToViewModel(string brokerList = "localhost:9092", string topic = "GpsVm", string consumerGroup = "richter-consumer", string schemaRegistryUrl = "localhost:8081")
         {
             List<KafkaObjectResult<GpsLocalizationViewModel>> messages = new List<KafkaObjectResult<GpsLocalizationViewModel>>();
 
@@ -142,22 +142,20 @@ namespace Richter.Kafka.POC.Controllers
             };
 
             const int commitPeriod = 20;
-
-            string schemaRegistryUrl = "localhost:8081";
-
-            var schema = (RecordSchema)RecordSchema.Parse(
-                @"{
-                    ""type"": ""GpsLocalizationViewModel"",
-                    ""name"": ""GpsLocalizationViewModel"",
-                    ""namespace"":""Richter.Kafka.Core.Product"",
-                    ""fields"": [
-                        {""name"": ""MessageKey"", ""type"": ""string""},
-                        {""name"": ""Latitude"", ""type"": ""string""},
-                        {""name"": ""Longitude"", ""type"": ""string""},
-                        {""name"": ""VehicleId"", ""type"": ""int""},
-                    ]
-                  }"
-            );
+           
+            //var schema = (RecordSchema)RecordSchema.Parse(
+            //    @"{
+            //        ""type"": ""GpsLocalizationViewModel"",
+            //        ""name"": ""GpsLocalizationViewModel"",
+            //        ""namespace"":""Richter.Kafka.Core.Product"",
+            //        ""fields"": [
+            //            {""name"": ""MessageKey"", ""type"": ""string""},
+            //            {""name"": ""Latitude"", ""type"": ""string""},
+            //            {""name"": ""Longitude"", ""type"": ""string""},
+            //            {""name"": ""VehicleId"", ""type"": ""int""},
+            //        ]
+            //      }"
+            //);
 
             using (var schemaRegistry = new CachedSchemaRegistryClient(new SchemaRegistryConfig
             {
@@ -177,6 +175,7 @@ namespace Richter.Kafka.POC.Controllers
                     .SetValueDeserializer(new AvroDeserializer<GpsLocalizationViewModel>(schemaRegistry).AsSyncOverAsync())
                     .Build())
                 {
+                    var topics = new List<string> { topic };
                     consumer.Subscribe(topics);
 
                     try

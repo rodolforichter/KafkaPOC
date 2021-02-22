@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Web.API", "01-Web.API", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Richter.Kafka.Core", "..\Richter.Kafka.Core\Richter.Kafka.Core.csproj", "{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Core", "02-Core", "{9B86881F-E678-41B2-A678-F3A342FF719A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,7 +31,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{92A81DCE-7EA7-428E-BC5A-B85F250242FB} = {AD3C2823-BC01-4411-AD62-5DAB77574955}
-		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A} = {AD3C2823-BC01-4411-AD62-5DAB77574955}
+		{0AF76B5D-EB32-46E0-9AB6-F1AC0BCBD40A} = {9B86881F-E678-41B2-A678-F3A342FF719A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {443CBE60-840F-4528-B95B-8D4EABDF1AC7}

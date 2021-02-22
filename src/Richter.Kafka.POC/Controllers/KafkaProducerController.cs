@@ -12,12 +12,7 @@ namespace Richter.Kafka.POC.Controllers
 {
     public class KafkaProducerController : ControllerBase
     {
-        [HttpPost("Send")]
-        public async Task<IActionResult> Send([FromBody] GpsLocalizationViewModel message, string broker, string topicName)
-        {
-            string schemaRegistryUrl = "localhost:8081";
-
-            var schema = (RecordSchema)RecordSchema.Parse(
+        public static RecordSchema _schemaViewModel = (RecordSchema)RecordSchema.Parse(
                 @"{
                     ""type"": ""record"",
                     ""name"": ""GpsLocalizationViewModel"",
@@ -31,7 +26,24 @@ namespace Richter.Kafka.POC.Controllers
                   }"
             );
 
-            GenericRecord genericMsg = new GenericRecord(schema);
+        public static RecordSchema _schemaRecordGeneric = (RecordSchema)RecordSchema.Parse(
+                @"{
+                    ""type"": ""record"",
+                    ""name"": ""GpsLocalizationViewModel"",
+                    ""namespace"":""Richter.Kafka.Core.Product"",
+                    ""fields"": [
+                        {""name"": ""MessageKey"", ""type"": ""string""},
+                        {""name"": ""Latitude"", ""type"": ""string""},
+                        {""name"": ""Longitude"", ""type"": ""string""},
+                        {""name"": ""VehicleId"", ""type"": ""int""},
+                    ]
+                  }"
+            );
+
+        [HttpPost("SendGenericRecord")]
+        public async Task<IActionResult> SendGenericRecord([FromBody] GpsLocalizationViewModel message, string topicName = "Gps02", string broker = "localhost:9092", string schemaRegistryUrl = "localhost:8081")
+        {
+            GenericRecord genericMsg = new GenericRecord(_schemaRecordGeneric);
             genericMsg.Add("MessageKey", message.MessageKey);
             genericMsg.Add("Latitude", message.Latitude);
             genericMsg.Add("Longitude", message.Longitude);
@@ -61,24 +73,8 @@ namespace Richter.Kafka.POC.Controllers
         }
 
         [HttpPost("SendViewModel")]
-        public async Task<IActionResult> SendViewModel([FromBody] GpsLocalizationViewModel message, string broker, string topicName)
-        {
-            string schemaRegistryUrl = "localhost:8081";
-
-            var schema = (RecordSchema)RecordSchema.Parse(
-                @"{
-                    ""type"": ""record"",
-                    ""name"": ""GpsLocalizationViewModel"",
-                    ""namespace"":""Richter.Kafka.Core.Product"",
-                    ""fields"": [
-                        {""name"": ""MessageKey"", ""type"": ""string""},
-                        {""name"": ""Latitude"", ""type"": ""string""},
-                        {""name"": ""Longitude"", ""type"": ""string""},
-                        {""name"": ""VehicleId"", ""type"": ""int""},
-                    ]
-                  }"
-            );
-
+        public async Task<IActionResult> SendViewModel([FromBody] GpsLocalizationViewModel message, string topicName = "GpsVm", string broker = "localhost:9092", string schemaRegistryUrl = "localhost:8081"){
+            
             var config = new ProducerConfig { BootstrapServers = broker };
             using (var schemaRegistry = new CachedSchemaRegistryClient(new SchemaRegistryConfig { Url = schemaRegistryUrl }))
             {
