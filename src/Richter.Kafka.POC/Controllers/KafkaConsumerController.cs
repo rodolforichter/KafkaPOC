@@ -63,19 +63,14 @@ namespace Richter.Kafka.POC.Controllers
                     .SetErrorHandler((_, e) => sbStatistics.Append($"Error: {e.Reason} {Environment.NewLine}"))
                     .SetStatisticsHandler((_, json) => sbStatistics.Append($"Statistics: {json} {Environment.NewLine}"))
                     .SetPartitionsAssignedHandler((c, partitions) =>
-                    {
-                    //sb.Append($"Assigned partitions: [{string.Join(", ", partitions)}] {Environment.NewLine}");
-                })
+                    { })
                     .SetPartitionsRevokedHandler((c, partitions) =>
-                    {
-                    //sb.Append($"Revoking assignment: [{string.Join(", ", partitions)}] {Environment.NewLine}");
-                })
+                    { })
                     .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistry).AsSyncOverAsync())
                     .SetValueDeserializer(new AvroDeserializer<GenericRecord>(schemaRegistry).AsSyncOverAsync())
                     .Build())
                 {
                     consumer.Subscribe(topics);
-
 
                     try
                     {
@@ -91,20 +86,12 @@ namespace Richter.Kafka.POC.Controllers
                             {
                                 var consumeResult = consumer.Consume(cts.Token);
 
-                                
-
                                 if (consumeResult.IsPartitionEOF)
                                 {
                                     break;
                                 }
 
-                                GpsLocalizationViewModel vm = new GpsLocalizationViewModel();
-                                vm.Latitude = consumeResult.Message.Value["Latitude"].ToString();
-                                vm.Longitude = consumeResult.Message.Value["Longitude"].ToString();
-                                vm.VehicleId = int.Parse(consumeResult.Message.Value["VehicleId"].ToString());
-                                vm.MessageKey = consumeResult.Message.Key;
-
-                                messages.Add(new KafkaObjectResult<GpsLocalizationViewModel>() { Key = consumeResult.Message.Key, OffSet = consumeResult.TopicPartitionOffset.Partition.Value, MessageResult = vm });
+                                messages.Add(new KafkaObjectResult<GpsLocalizationViewModel>() { Key = consumeResult.Message.Key, OffSet = consumeResult.TopicPartitionOffset.Partition.Value, MessageResult = GetViewModelByConsumerResult(consumeResult) });
 
                                 if (consumeResult.Offset % commitPeriod == 0)
                                 {
@@ -114,19 +101,18 @@ namespace Richter.Kafka.POC.Controllers
                                     }
                                     catch (KafkaException e)
                                     {
-                                        //mensagens.Add($"Commit error: {e.Error.Reason}");
+                                        return BadRequest(e.Message);
                                     }
                                 }
                             }
                             catch (ConsumeException e)
                             {
-                                Console.WriteLine($"Consume error: {e.Error.Reason}");
+                                return BadRequest(e.Message);
                             }
                         }
                     }
                     catch (OperationCanceledException)
                     {
-                        //mensagens.Add("Closing consumer.");
                         consumer.Close();
                     }
 
@@ -183,18 +169,15 @@ namespace Richter.Kafka.POC.Controllers
                     .SetStatisticsHandler((_, json) => sbStatistics.Append($"Statistics: {json} {Environment.NewLine}"))
                     .SetPartitionsAssignedHandler((c, partitions) =>
                     {
-                        //sb.Append($"Assigned partitions: [{string.Join(", ", partitions)}] {Environment.NewLine}");
                     })
                     .SetPartitionsRevokedHandler((c, partitions) =>
                     {
-                        //sb.Append($"Revoking assignment: [{string.Join(", ", partitions)}] {Environment.NewLine}");
                     })
                     .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistry).AsSyncOverAsync())
                     .SetValueDeserializer(new AvroDeserializer<GpsLocalizationViewModel>(schemaRegistry).AsSyncOverAsync())
                     .Build())
                 {
                     consumer.Subscribe(topics);
-
 
                     try
                     {
@@ -209,8 +192,6 @@ namespace Richter.Kafka.POC.Controllers
                             try
                             {
                                 var consumeResult = consumer.Consume(cts.Token);
-
-
 
                                 if (consumeResult.IsPartitionEOF)
                                 {
@@ -227,25 +208,34 @@ namespace Richter.Kafka.POC.Controllers
                                     }
                                     catch (KafkaException e)
                                     {
-                                        //mensagens.Add($"Commit error: {e.Error.Reason}");
+                                        return BadRequest(e.Message);
                                     }
                                 }
                             }
                             catch (ConsumeException e)
                             {
-                                Console.WriteLine($"Consume error: {e.Error.Reason}");
+                                return BadRequest(e.Message);
                             }
                         }
                     }
                     catch (OperationCanceledException)
                     {
-                        //mensagens.Add("Closing consumer.");
                         consumer.Close();
                     }
 
                     return Ok(messages);
                 }
             }
+        }
+
+        private static GpsLocalizationViewModel GetViewModelByConsumerResult(ConsumeResult<string, GenericRecord> consumeResult)
+        {
+            GpsLocalizationViewModel vm = new GpsLocalizationViewModel();
+            vm.Latitude = consumeResult.Message.Value["Latitude"].ToString();
+            vm.Longitude = consumeResult.Message.Value["Longitude"].ToString();
+            vm.VehicleId = int.Parse(consumeResult.Message.Value["VehicleId"].ToString());
+            vm.MessageKey = consumeResult.Message.Key;
+            return vm;
         }
     }
 }
